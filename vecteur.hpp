@@ -36,7 +36,10 @@ public:
 	TYPE& at(int index) const;
 	bool isEmpty() const;
 
+	const bool operator==(const Vecteur<TYPE>& vect) const;
 	const Vecteur<TYPE>& operator=(const Vecteur<TYPE>& vect);
+	Vecteur<TYPE> operator+(const Vecteur<TYPE>& vect) const;
+	const Vecteur<TYPE> operator+=(const Vecteur<TYPE>& vect);
 	TYPE& operator[](int position) const;
 };
 
@@ -146,6 +149,20 @@ inline bool Vecteur<TYPE>::isEmpty() const {
 }
 
 template<class TYPE>
+const bool Vecteur<TYPE>::operator==(const Vecteur<TYPE>& vect) const
+{
+	if (_dim == vect._dim)
+	{
+		for (int i = 0; i < _dim; i++)
+			if (this->at(i) != vect.at(i))
+				return false;
+		return true;
+	}
+	else
+		return false;
+}
+
+template<class TYPE>
 const Vecteur<TYPE>& Vecteur<TYPE>::operator=(const Vecteur<TYPE>& vect) {
 	if (this == &vect)
 		return *this;
@@ -158,6 +175,27 @@ const Vecteur<TYPE>& Vecteur<TYPE>::operator=(const Vecteur<TYPE>& vect) {
 	for (int i = 0; i < _dim; i++)
 		*(_tab + i) = *(vect._tab + i);
 
+	return *this;
+}
+
+template<class TYPE>
+Vecteur<TYPE> Vecteur<TYPE>::operator+(const Vecteur<TYPE>& vect) const {
+	Vecteur<TYPE> newVect(_dim + vect._dim);
+
+	for (int i = 0; i < newVect._dim; i++)
+	{
+		if (i < _dim)
+			*(newVect._tab + i) = *(_tab + i);
+		else
+			*(newVect._tab + i) = *(vect._tab + i - _dim);
+	}
+
+	return newVect;
+}
+
+template<class TYPE>
+const Vecteur<TYPE> Vecteur<TYPE>::operator+=(const Vecteur<TYPE>& vect) {
+	*this = operator+(vect);
 	return *this;
 }
 

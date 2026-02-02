@@ -12,6 +12,8 @@
 
 Canevas::Canevas() {
 	activeLayerIndex = 0;
+
+	couches.resize(5);
 	couches[0].setState(1); // Active
 }
 
@@ -24,7 +26,7 @@ Couche Canevas::getCouche(int index) const {
 }
 
 void Canevas::setCouche(const Couche& couche, int index) {
-	if (index >= 0 && index < MAX_COUCHES)
+	if (index >= 0 && index < couches.size())
 		couches[index] = couche;
 }
 
@@ -33,7 +35,7 @@ int Canevas::getActiveLayerIndex() const {
 }
 
 void Canevas::setActiveLayerIndex(int index) {
-	if (index >= 0 && index < MAX_COUCHES) {
+	if (index >= 0 && index < couches.size()) {
 		this->couches[activeLayerIndex].setState(2);
 		this->couches[index].setState(1);
 
@@ -42,7 +44,7 @@ void Canevas::setActiveLayerIndex(int index) {
 }
 
 bool Canevas::reinitialiserCouche(int index) {
-	if (index >= 0 && index < MAX_COUCHES) {
+	if (index >= 0 && index < couches.size()) {
 		bool returnValue = this->couches[index].reinitialiser();
 		index == activeLayerIndex ? activerCouche(index) : 0;
 
@@ -53,7 +55,7 @@ bool Canevas::reinitialiserCouche(int index) {
 }
 
 bool Canevas::activerCouche(int index) {
-	if (index < 0 || index >= MAX_COUCHES)
+	if (index < 0 || index >= couches.size())
 		return false;
 
 	this->couches[index].setState(1); // Active
@@ -89,7 +91,7 @@ bool Canevas::retirerForme(int index) {
 double Canevas::getAireTotale() {
 	double totalAire = 0.0;
 	
-	for (int i = 0; i < MAX_COUCHES; i++)
+	for (int i = 0; i < couches.size(); i++)
 		totalAire += this->couches[i].getAireTotale();
 
 	return totalAire;
@@ -100,7 +102,7 @@ bool Canevas::translater(int deltaX, int deltaY) {
 }
 
 bool Canevas::reinitialiser() {
-	for (int i = 0; i < MAX_COUCHES; i++) {
+	for (int i = 0; i < couches.size(); i++) {
 		if (!reinitialiserCouche(i))
 			return false;
 	}
@@ -110,7 +112,7 @@ bool Canevas::reinitialiser() {
 
 
 void Canevas::afficher(ostream & s) {
-	for (int i = 0; i < MAX_COUCHES; i++) {
+	for (int i = 0; i < couches.size(); i++) {
 		s << "----- Couche (" << i << ") -----" << endl;
 		this->couches[i].afficher(s);
 	}

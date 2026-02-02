@@ -12,17 +12,16 @@
 #define CANEVAS_H
 
 #include <iostream>
+#include "vecteur.hpp"
 #include "forme.h"
 #include "couche.h"
-
-const int MAX_COUCHES = 5;
 
 using namespace std;
 
 class Canevas
 {
 private:
-	Couche couches[MAX_COUCHES];
+	Vecteur<Couche> couches;
 	int activeLayerIndex;
 
 public:
