@@ -28,6 +28,10 @@ public:
     MonInterface(const char* theName = nullptr);
     virtual ~MonInterface();
 
+    // Menu Fichier
+    virtual bool ouvrirFichier(const char* nom) override;
+    virtual bool sauvegarderFichier(const char* nom) override;
+
     // Menu Canevas
     virtual void reinitialiserCanevas() override;
     virtual void coucheAjouter() override;

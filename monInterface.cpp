@@ -2,6 +2,7 @@
 #include "cercle.h"
 #include "rectangle.h"
 #include "carre.h"
+#include <fstream>
 #include <sstream>
 #include <random>
 #include <cstring>
@@ -190,6 +191,85 @@ void MonInterface::generateRandomCanevas()
     // Draw using the command format
     dessiner(os.str().c_str());
     updateInformations();
+}
+
+
+// Menu fichier
+bool MonInterface::ouvrirFichier(const char* nom)
+{
+    ifstream fichier;
+    string ligne;
+
+    canevas->reinitialiser();
+
+    fichier.open(nom); 
+    if (!fichier) 
+    { 
+       messageErreur("Le fichier n’a pas pu être ouvert");
+       return false; 
+    }
+
+    // ignore la première ligne puisqu'une couche demeure toujours dans le canevas après la réinitialisation
+    getline(fichier, ligne);
+
+    while (getline(fichier, ligne)) 
+    {
+        // Si la ligne est vide, on passe à la prochaine
+        if (ligne.empty())
+        {
+            continue;
+        }
+
+        istringstream iss(ligne);
+
+        char type; 
+        iss >> type;
+
+        if (type == 'L')
+        {
+            this->coucheAjouter();
+            char etat_couche;
+            iss >> etat_couche;
+            //ajouter l'état de la couche
+        }
+        else if (type == 'R')
+        {
+            int x, y, l, h; 
+            iss >> x >> y >> l >> h; 
+            ajouterRectangle(x, y, l, h);
+        }
+        else if (type == 'K')
+        {
+            int x, y, t;
+            iss >> x >> y >> t;
+            ajouterCarre(x, y, t);
+        }
+        else if (type == 'C')
+        {
+            int x, y, c;
+            iss >> x >> y >> c;
+            ajouterCercle(x, y, c);
+        }
+    }
+
+    updateDisplay();
+    updateInformations();
+    return true;
+}
+
+bool MonInterface::sauvegarderFichier(const char* nom)
+{
+    ofstream fichier;
+
+    fichier.open(nom);
+    if (!fichier.is_open()) 
+    { 
+        messageErreur("Le fichier n’a pas pu être sauvegardé");
+        return false; 
+    } 
+
+    fichier << this->canevasToString();
+    return true;
 }
 
 void MonInterface::reinitialiserCanevas()
