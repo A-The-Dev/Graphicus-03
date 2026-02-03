@@ -31,6 +31,7 @@ public:
 	int size() const;
 	void clear();
 	void push_back(const TYPE& value);
+	void remove(int index);
 	void print(std::ostream& output) const;
 	void resize(int newDim);
 	TYPE& at(int index) const;
@@ -112,6 +113,26 @@ void Vecteur<TYPE>::push_back(const TYPE& value) {
 	delete[] _tab;
 
 	_tab = newTab;
+}
+
+template<class TYPE>
+void Vecteur<TYPE>::remove(int index) {
+	assert(index >= 0 && index < _dim);
+	if (_dim == 1) {
+		clear();
+	}
+	else {
+		TYPE* newTab = new TYPE[_dim - 1];
+		for (int i = 0, j = 0; i < _dim; i++) {
+			if (i != index) {
+				*(newTab + j) = *(_tab + i);
+				j++;
+			}
+		}
+		delete[] _tab;
+		_tab = newTab;
+		_dim--;
+	}
 }
 
 template<class TYPE>

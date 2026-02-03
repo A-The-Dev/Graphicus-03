@@ -33,7 +33,7 @@ bool Couche::setState(int id) {
 }
 
 Vecteur<Forme*> Couche::getFormes() const {
-	return Vecteur<Forme*>();
+	return formes;
 }
 
 Forme* Couche::getFormeByIndex(int index) const {

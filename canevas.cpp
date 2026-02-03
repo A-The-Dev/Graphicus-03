@@ -13,7 +13,7 @@
 Canevas::Canevas() {
 	activeLayerIndex = 0;
 
-	couches.resize(5);
+	couches.push_back(Couche());
 	couches[0].setState(1); // Active
 }
 
@@ -22,7 +22,7 @@ Canevas::~Canevas() {
 }
 
 Couche Canevas::getCouche(int index) const {
-	return Couche();
+	return couches[index];
 }
 
 void Canevas::setCouche(const Couche& couche, int index) {
@@ -52,6 +52,30 @@ bool Canevas::reinitialiserCouche(int index) {
 	}
 		
 	return false;
+}
+
+int Canevas::getCouchesSize() const {
+	return couches.size();
+}
+
+bool Canevas::ajouterCouche() {
+	Couche nouvelleCouche;
+	couches.push_back(nouvelleCouche);
+	activerCouche(couches.size() - 1);
+
+	return true;
+}
+
+bool Canevas::retirerCouche(int index) {
+	if (index < 0 || index >= couches.size())
+		return false;
+	
+	reinitialiserCouche(index);
+	activerCouche(0);
+
+	couches.remove(index);
+
+	return true;
 }
 
 bool Canevas::activerCouche(int index) {

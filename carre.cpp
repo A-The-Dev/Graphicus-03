@@ -39,5 +39,5 @@ double Carre::aire() {
 }
 
 void Carre::afficher(ostream& s) {
-	cout << "Carre (x=" << this->getAncrage().x << ", y=" << this->getAncrage().y << ", t=" << getTaille() << ", aire=" << aire() << ")" << endl;
+	s << "Carre (x=" << this->getAncrage().x << ", y=" << this->getAncrage().y << ", t=" << getTaille() << ", aire=" << aire() << ")" << endl;
 }

@@ -36,5 +36,5 @@ double Cercle::aire() {
 }
 
 void Cercle::afficher(ostream& s) {
-	cout << "Cercle (x=" << this->getAncrage().x << ", y=" << this->getAncrage().y << ", r=" << getRayon() << ", aire=" << aire() << ")" << endl;
+	s << "Cercle (x=" << this->getAncrage().x << ", y=" << this->getAncrage().y << ", r=" << getRayon() << ", aire=" << aire() << ")" << endl;
 }

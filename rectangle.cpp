@@ -49,5 +49,5 @@ double Rectangle::aire() {
 }
 
 void Rectangle::afficher(ostream& s) {
-	cout << "Rectangle (x=" << this->getAncrage().x << ", y=" << this->getAncrage().y << ", l=" << getLargeur() << ", h=" << getHauteur() << ", aire=" << aire() << ")" << endl;
+	s << "Rectangle (x=" << this->getAncrage().x << ", y=" << this->getAncrage().y << ", l=" << getLargeur() << ", h=" << getHauteur() << ", aire=" << aire() << ")" << endl;
 }

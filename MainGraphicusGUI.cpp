@@ -14,17 +14,17 @@
 using namespace std;
 
 int main( int argc, char ** argv ) {
-	SetConsoleOutputCP(CP_UTF8);
+	//SetConsoleOutputCP(CP_UTF8);
 
-	Tests tests;
+	//Tests tests;
 
-	tests.tests_application();
-	tests.tests_unitaires();
+	//tests.tests_application();
+	//tests.tests_unitaires();
 
-	//QApplication app(argc, argv);
-	//MonInterface gui("GraphicusGUI 1.1");
+	QApplication app(argc, argv);
+	MonInterface gui("GraphicusGUI 1.1");
 
-	system("pause");
+	//system("pause");
 
-	return 0; //app.exec();
+	return app.exec();
 }

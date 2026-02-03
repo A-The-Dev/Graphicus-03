@@ -36,7 +36,12 @@ public:
 
 	bool reinitialiser();
 	bool reinitialiserCouche(int index);
+
 	bool activerCouche(int index);
+	int getCouchesSize() const;
+	bool ajouterCouche();
+	bool retirerCouche(int index);
+
 	bool ajouterForme(Forme* const& p_forme);
 	bool retirerForme(int index);
 	double getAireTotale();
