@@ -193,7 +193,6 @@ void MonInterface::generateRandomCanevas()
     updateInformations();
 }
 
-
 // Menu fichier
 bool MonInterface::ouvrirFichier(const char* nom)
 {
@@ -482,6 +481,23 @@ void MonInterface::formeDerniere()
     }
     else {
         messageErreur("Aucune forme dans la couche active");
+    }
+}
+
+// mode pile
+void MonInterface::modePileChange(bool mode)
+{
+    canevas->inverserCouches();
+
+    updateDisplay();
+    updateInformations();
+
+    if (mode == true)
+    {
+        message("Mode pile activé");
+    }
+    else {
+        message("Mode pile désactivé");
     }
 }
 

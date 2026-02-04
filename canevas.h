@@ -41,6 +41,7 @@ public:
 	int getCouchesSize() const;
 	bool ajouterCouche();
 	bool retirerCouche(int index);
+	void inverserCouches();
 
 	bool ajouterForme(Forme* const& p_forme);
 	bool retirerForme(int index);

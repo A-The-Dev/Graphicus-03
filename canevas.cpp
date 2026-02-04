@@ -112,6 +112,19 @@ bool Canevas::retirerForme(int index) {
 	return false;
 }
 
+void Canevas::inverserCouches() {
+	int size = this->getCouchesSize();
+
+	for (int i = 0; i < size / 2; i++)
+	{
+		int j = size - 1 - i;
+
+		Couche temp = this->getCouche(i);
+		this->setCouche(this->getCouche(j), i);
+		this->setCouche(temp, j);
+	}
+}
+
 double Canevas::getAireTotale() {
 	double totalAire = 0.0;
 	

@@ -50,6 +50,9 @@ public:
     virtual void formeSuivante() override;
     virtual void formeDerniere() override;
 
+    // mode pile
+    virtual void modePileChange(bool mode) override;
+
     // Overrides from base class
     virtual void coucheTranslater(int deltaX, int deltaY) override;
     virtual void ajouterCercle(int x, int y, int r) override;
