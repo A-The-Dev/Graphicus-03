@@ -82,11 +82,11 @@ void MonInterface::updateDisplay()
     // Clear the current display
     effacer();
 
-    // Generate command format from current canvas state
-    string commands = canevasToString();
+    // Generate format from current canvas state
+    string stringCanevas = canevasToString();
 
     // Display the canevas
-    dessiner(commands.c_str());
+    dessiner(stringCanevas.c_str());
 }
 
 void MonInterface::updateInformations() 
@@ -203,6 +203,7 @@ bool MonInterface::ouvrirFichier(const char* nom)
     string ligne;
 
     canevas->reinitialiser();
+    canevas = new Canevas();
 
     fichier.open(nom); 
     if (!fichier) 
@@ -273,6 +274,8 @@ bool MonInterface::sauvegarderFichier(const char* nom)
     } 
 
     fichier << this->canevasToString();
+    fichier.close();
+
     return true;
 }
 
