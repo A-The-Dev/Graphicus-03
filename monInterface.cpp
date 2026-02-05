@@ -428,6 +428,11 @@ void MonInterface::coucheDerniere()
 // Menu navigation - Formes
 void MonInterface::formePremiere()
 {
+    if (canevas->getCouchesSize() == 0) {
+        messageErreur("Aucune couche dans le canevas");
+        return;
+    }
+
     int activeLayerIndex = canevas->getActiveLayerIndex();
     if (activeLayerIndex < 0) {
         messageErreur("Aucune couche active");
@@ -448,6 +453,11 @@ void MonInterface::formePremiere()
 
 void MonInterface::formePrecedente()
 {
+    if (canevas->getCouchesSize() == 0) {
+        messageErreur("Aucune couche dans le canevas");
+        return;
+    }
+
     int activeLayerIndex = canevas->getActiveLayerIndex();
     if (activeLayerIndex < 0) {
         messageErreur("Aucune couche active");
@@ -475,6 +485,11 @@ void MonInterface::formePrecedente()
 
 void MonInterface::formeSuivante()
 {
+    if (canevas->getCouchesSize() == 0) {
+        messageErreur("Aucune couche dans le canevas");
+        return;
+    }
+
     int activeLayerIndex = canevas->getActiveLayerIndex();
     if (activeLayerIndex < 0) {
         messageErreur("Aucune couche active");
@@ -503,6 +518,11 @@ void MonInterface::formeSuivante()
 
 void MonInterface::formeDerniere()
 {
+    if (canevas->getCouchesSize() == 0) {
+        messageErreur("Aucune couche dans le canevas");
+        return;
+    }
+
     int activeLayerIndex = canevas->getActiveLayerIndex();
     if (activeLayerIndex < 0) {
         messageErreur("Aucune couche active");
@@ -543,6 +563,11 @@ void MonInterface::modePileChange(bool mode)
 // Other overrides
 void MonInterface::coucheTranslater(int deltaX, int deltaY)
 {
+    if (canevas->getCouchesSize() == 0) {
+        messageErreur("Aucune couche dans le canevas");
+        return;
+    }
+
     bool success = canevas->translater(deltaX, deltaY);
     if (success) {
         message("Couche translatée");

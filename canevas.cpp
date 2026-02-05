@@ -94,6 +94,9 @@ bool Canevas::ajouterForme(Forme* const& p_forme) {
 	if (p_forme == nullptr)
 		return false;
 
+	if (couches.size() == 0)
+		return false;
+
 	if (this->couches[getActiveLayerIndex()].getState() == STATES[1]) {
 		return this->couches[getActiveLayerIndex()].addForme(p_forme);
 	}

@@ -1,7 +1,7 @@
 /********
  * Fichier: vecteur.hpp
  * Auteurs: A. Samson
- * Date: 5 Janvier 2025
+ * Date: 02 février 2026
  * Description: Déclaration de la classe Vecteur 
  * et implémentation de ses méthodes.
  *
@@ -21,6 +21,7 @@ class Vecteur {
 private:
 	TYPE* _tab;
 	int _dim;
+	int _currentIndex;
 
 public:
 	Vecteur(); 
@@ -37,17 +38,28 @@ public:
 	TYPE& at(int index) const;
 	bool isEmpty() const;
 
+	int getCurrentIndex() const;
+	void setCurrentIndex(int index);
+	TYPE& getCurrentItem() const;
+
 	const bool operator==(const Vecteur<TYPE>& vect) const;
 	const Vecteur<TYPE>& operator=(const Vecteur<TYPE>& vect);
 	Vecteur<TYPE> operator+(const Vecteur<TYPE>& vect) const;
 	const Vecteur<TYPE> operator+=(const Vecteur<TYPE>& vect);
 	TYPE& operator[](int position) const;
+
+	Vecteur<TYPE>& operator++();  // Pré-incrémentation: passe à l'item suivant
+	Vecteur<TYPE>& operator--();  // Pré-décrémentation: passe à l'item précédent
+
+	friend ostream& operator<<(ostream& output, const Vecteur<TYPE>& vec);
+	friend istream& operator>>(istream& input, Vecteur<TYPE>& vec);
 };
 
 template<class TYPE>
 Vecteur<TYPE>::Vecteur() {
 	_tab = nullptr;
 	_dim = 0;
+	_currentIndex = 0;
 }
 
 template<class TYPE>
@@ -57,11 +69,13 @@ Vecteur<TYPE>::Vecteur(int dim) {
 	if (dim == 0) {
 		_dim = 0;
 		_tab = nullptr;
+		_currentIndex = 0;
 	}
 	else {
 		try {
 			_dim = dim;
 			_tab = new TYPE[dim];
+			_currentIndex = 0;
 		}
 		catch (bad_alloc) {
 			exit(EXIT_FAILURE);
@@ -74,10 +88,12 @@ Vecteur<TYPE>::Vecteur(const Vecteur<TYPE>& vec) {
 	if (vec._dim == 0) {
 		_tab = nullptr;
 		_dim = 0;
+		_currentIndex = 0;
 	}
 	else {
 		_dim = vec._dim;
 		_tab = new TYPE[vec._dim];
+		_currentIndex = vec._currentIndex;
 
 		for (int i = 0; i < _dim; i++)
 			*(_tab + i) = *(vec._tab + i);
@@ -99,6 +115,7 @@ void Vecteur<TYPE>::clear() {
 	delete[] _tab;
 	_tab = nullptr;
 	_dim = 0;
+	_currentIndex = 0;
 }
 
 template<class TYPE>
@@ -170,6 +187,23 @@ inline bool Vecteur<TYPE>::isEmpty() const {
 }
 
 template<class TYPE>
+int Vecteur<TYPE>::getCurrentIndex() const {
+	return _currentIndex;
+}
+
+template<class TYPE>
+void Vecteur<TYPE>::setCurrentIndex(int index) {
+	assert(index >= 0 && index < _dim);
+	_currentIndex = index;
+}
+
+template<class TYPE>
+TYPE& Vecteur<TYPE>::getCurrentItem() const {
+	assert(_currentIndex >= 0 && _currentIndex < _dim);
+	return *(_tab + _currentIndex);
+}
+
+template<class TYPE>
 const bool Vecteur<TYPE>::operator==(const Vecteur<TYPE>& vect) const
 {
 	if (_dim == vect._dim)
@@ -226,9 +260,40 @@ TYPE& Vecteur<TYPE>::operator[](int position) const {
 }
 
 template<class TYPE>
-std::ostream& operator<<(std::ostream& output, const Vecteur<TYPE>& vec) {
+Vecteur<TYPE>& Vecteur<TYPE>::operator++() {
+	if (_currentIndex < _dim - 1)
+		_currentIndex++;
+	return *this;
+}
+
+template<class TYPE>
+Vecteur<TYPE>& Vecteur<TYPE>::operator--() {
+	if (_currentIndex > 0)
+		_currentIndex--;
+	return *this;
+}
+
+template<class TYPE>
+ostream& operator<<(ostream& output, const Vecteur<TYPE>& vec) {
 	vec.print(output);
 	return output;
+}
+
+template<class TYPE>
+istream& operator>>(istream& input, Vecteur<TYPE>& vec) {
+	int size;
+	input >> size;
+
+	vec.clear();
+	vec.resize(size);
+
+	for (int i = 0; i < size; i++) {
+		TYPE value;
+		input >> value;
+		vec[i] = value;
+	}
+
+	return input;
 }
 
 #endif

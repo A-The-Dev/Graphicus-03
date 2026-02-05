@@ -126,7 +126,8 @@
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>_CONSOLE;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;NDEBUG;QT_NO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
-      <ProgramDataBaseFileName></ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>
+      </ProgramDataBaseFileName>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -166,7 +167,6 @@
     <ClCompile Include="forme.cpp" />
     <ClCompile Include="monInterface.cpp" />
     <ClCompile Include="rectangle.cpp" />
-    <ClCompile Include="tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="canevas.h" />
@@ -177,7 +177,6 @@
     <ClInclude Include="forme.h" />
     <ClInclude Include="monInterface.h" />
     <ClInclude Include="rectangle.h" />
-    <ClInclude Include="tests.h" />
     <ClInclude Include="vecteur.hpp" />
   </ItemGroup>
   <ItemGroup>

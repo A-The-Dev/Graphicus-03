@@ -7,22 +7,11 @@
 ********/
 
 #include <QApplication>
-//#include <windows.h>
-#include "tests.h"
 #include "monInterface.h"
 
 using namespace std;
 
 int main( int argc, char ** argv ) {
-	//SetConsoleOutputCP(CP_UTF8);
-
-	//Tests tests;
-
-	//tests.tests_application();
-	//tests.tests_unitaires();
-
-	//system("pause");
-
 	QApplication app(argc, argv);
 	MonInterface gui("GraphicusGUI 1.1");
 
