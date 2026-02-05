@@ -1,3 +1,11 @@
+/********
+* Fichier: monInterface.cpp
+* Auteurs: A. Samson
+* Date: 02 février 2026
+* Description: La classe MonInterface modifiée pour l'interface utilisateur GraphicusGUI.
+*
+********/
+
 #include "monInterface.h"
 #include "cercle.h"
 #include "rectangle.h"
@@ -7,24 +15,23 @@
 #include <random>
 #include <cstring>
 
-MonInterface::MonInterface(const char* theName) : GraphicusGUI(theName)
+MonInterface::MonInterface(const char* theName) : GraphicusGUI(theName) 
 {
     canevas = new Canevas();
     generateRandomCanevas();
     updateInformations();
 }
 
-MonInterface::~MonInterface()
+MonInterface::~MonInterface() 
 {
     delete canevas;
 }
 
-string MonInterface::canevasToString()
+string MonInterface::canevasToString() 
 {
     ostringstream os;
-
-    // Iterate through all layers
     int nbCouches = canevas->getCouchesSize();
+
     for (int i = 0; i < nbCouches; i++) {
         Couche couche = canevas->getCouche(i);
         string state = couche.getState();
@@ -70,7 +77,7 @@ string MonInterface::canevasToString()
     return os.str();
 }
 
-void MonInterface::updateDisplay()
+void MonInterface::updateDisplay() 
 {
     // Clear the current display
     effacer();
@@ -82,7 +89,7 @@ void MonInterface::updateDisplay()
     dessiner(commands.c_str());
 }
 
-void MonInterface::updateInformations()
+void MonInterface::updateInformations() 
 {
     Informations info;
 
@@ -109,20 +116,20 @@ void MonInterface::updateInformations()
         strncpy(info.etatCouche, state.c_str(), 19);
         info.etatCouche[19] = '\0';
 
-        // Since Couche doesn't track active forme, we'll use first forme if available for now
+        // Get the active form using activeShapeIndex
         if (info.nbFormesCouche > 0) {
-            info.formeActive = 0; // First forme by default
-            Forme* premiereForme = activeCouche.getFormeByIndex(0);
+            info.formeActive = activeCouche.getActiveShapeIndex();
+            Forme* activeForme = activeCouche.getFormeByIndex(info.formeActive);
 
-            if (premiereForme != nullptr) {
-                Coordonnee ancrage = premiereForme->getAncrage();
+            if (activeForme != nullptr) {
+                Coordonnee ancrage = activeForme->getAncrage();
                 info.coordX = ancrage.x;
                 info.coordY = ancrage.y;
-                info.aireForme = premiereForme->aire();
+                info.aireForme = activeForme->aire();
 
                 // Get form-specific information
                 ostringstream formInfo;
-                premiereForme->afficher(formInfo);
+                activeForme->afficher(formInfo);
                 string formStr = formInfo.str();
                 // Extract just the essential info (first line if multi-line)
                 size_t newlinePos = formStr.find('\n');
@@ -161,29 +168,25 @@ void MonInterface::updateInformations()
 
     setInformations(info);
 }
-
-void MonInterface::generateRandomCanevas()
+void MonInterface::generateRandomCanevas() 
 {
-    // First, reset the canevas
     canevas->reinitialiser();
 
-    // Then generate random shapes
     ostringstream os;
     random_device r;
     default_random_engine generator(r());
     uniform_int_distribution<int> coor(0, 300), dim(20, 100);
 
-    // Generate random canvas content in the proper format
     os << "L x" << endl;  // Layer inactive
     os << "R " << coor(generator) << " " << coor(generator) << " " << dim(generator) << " " << dim(generator) << endl;
     os << "K " << coor(generator) << " " << coor(generator) << " " << dim(generator) << endl;
     os << "L a" << endl;  // Layer active
     os << "K " << coor(generator) << " " << coor(generator) << " " << dim(generator) << endl;
     os << "C " << coor(generator) << " " << coor(generator) << " " << dim(generator) << endl;
-    os << "L x" << endl;  // Layer inactive
+    os << "L x" << endl;
     os << "R " << coor(generator) << " " << coor(generator) << " " << dim(generator) << " " << dim(generator) << endl;
     os << "C " << coor(generator) << " " << coor(generator) << " " << dim(generator) << endl;
-    os << "L x" << endl;  // Layer inactive
+    os << "L x" << endl;
     os << "R " << coor(generator) << " " << coor(generator) << " " << dim(generator) << " " << dim(generator) << endl;
     os << "K " << coor(generator) << " " << coor(generator) << " " << dim(generator) << endl;
     os << "C " << coor(generator) << " " << coor(generator) << " " << dim(generator) << endl;
@@ -253,6 +256,8 @@ bool MonInterface::ouvrirFichier(const char* nom)
 
     updateDisplay();
     updateInformations();
+    fichier.close();
+
     return true;
 }
 
@@ -273,7 +278,7 @@ bool MonInterface::sauvegarderFichier(const char* nom)
 
 void MonInterface::reinitialiserCanevas()
 {
-    // Simply reset the canevas to empty state
+    // Reset the canevas to empty state
     canevas->reinitialiser();
     
     message("Canevas réinitialisé");
@@ -317,17 +322,23 @@ void MonInterface::coucheRetirer()
 // Menu Formes
 void MonInterface::retirerForme()
 {
-    int activeLayerIndex = canevas->getActiveLayerIndex();
-    if (activeLayerIndex < 0) {
+    if (canevas->getCouchesSize() <= 0) {
+        messageErreur("Aucune couche n'existe!");
+        return;
+    }
+
+    if (canevas->getActiveLayerIndex() < 0) {
         messageErreur("Aucune couche active");
         return;
     }
 
-    Couche activeCouche = canevas->getCouche(activeLayerIndex);
+    Couche activeCouche = canevas->getCouche(canevas->getActiveLayerIndex());
     int nbFormes = activeCouche.getFormes().size();
 
     if (nbFormes > 0) {
-        bool success = canevas->retirerForme(0);
+		int shapeIndex = activeCouche.getActiveShapeIndex();
+
+        bool success = canevas->retirerForme(shapeIndex);
         if (success) {
             message("Forme retirée");
             updateDisplay();
@@ -422,6 +433,8 @@ void MonInterface::formePremiere()
 
     Couche activeCouche = canevas->getCouche(activeLayerIndex);
     if (activeCouche.getFormes().size() > 0) {
+        activeCouche.setActiveShapeIndex(0);
+        canevas->setCouche(activeCouche, activeLayerIndex);
         message("Première forme sélectionnée");
         updateInformations();
     }
@@ -439,12 +452,21 @@ void MonInterface::formePrecedente()
     }
 
     Couche activeCouche = canevas->getCouche(activeLayerIndex);
-    if (activeCouche.getFormes().size() > 0) {
-        message("Forme précédente (fonctionnalité limitée sans index actif)");
+    int currentShapeIndex = activeCouche.getActiveShapeIndex();
+
+    if (activeCouche.getFormes().size() == 0) {
+        messageErreur("Aucune forme dans la couche active");
+        return;
+    }
+
+    if (currentShapeIndex > 0) {
+        activeCouche.setActiveShapeIndex(currentShapeIndex - 1);
+        canevas->setCouche(activeCouche, activeLayerIndex);
+        message("Forme précédente sélectionnée");
         updateInformations();
     }
     else {
-        messageErreur("Aucune forme dans la couche active");
+        messageErreur("Déjà à la première forme");
     }
 }
 
@@ -457,12 +479,22 @@ void MonInterface::formeSuivante()
     }
 
     Couche activeCouche = canevas->getCouche(activeLayerIndex);
-    if (activeCouche.getFormes().size() > 0) {
-        message("Forme suivante (fonctionnalité limitée sans index actif)");
+    int currentShapeIndex = activeCouche.getActiveShapeIndex();
+    int nbFormes = activeCouche.getFormes().size();
+
+    if (nbFormes == 0) {
+        messageErreur("Aucune forme dans la couche active");
+        return;
+    }
+
+    if (currentShapeIndex < nbFormes - 1) {
+        activeCouche.setActiveShapeIndex(currentShapeIndex + 1);
+        canevas->setCouche(activeCouche, activeLayerIndex);
+        message("Forme suivante sélectionnée");
         updateInformations();
     }
     else {
-        messageErreur("Aucune forme dans la couche active");
+        messageErreur("Déjà à la dernière forme");
     }
 }
 
@@ -475,7 +507,11 @@ void MonInterface::formeDerniere()
     }
 
     Couche activeCouche = canevas->getCouche(activeLayerIndex);
-    if (activeCouche.getFormes().size() > 0) {
+    int nbFormes = activeCouche.getFormes().size();
+
+    if (nbFormes > 0) {
+        activeCouche.setActiveShapeIndex(nbFormes - 1);
+        canevas->setCouche(activeCouche, activeLayerIndex);
         message("Dernière forme sélectionnée");
         updateInformations();
     }

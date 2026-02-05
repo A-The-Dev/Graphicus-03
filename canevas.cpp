@@ -144,6 +144,10 @@ bool Canevas::reinitialiser() {
 			return false;
 	}
 
+	couches.clear();
+	couches.push_back(Couche());
+	couches[0].setState(1);
+
 	return true;
 }
 

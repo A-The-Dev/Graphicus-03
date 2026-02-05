@@ -13,6 +13,7 @@
 // Implémentation à faire...
 Couche::Couche() {
 	currentState = STATES[0]; // Initialisée
+	activeShapeIndex = -1;
 }
 
 Couche::~Couche() {
@@ -32,6 +33,15 @@ bool Couche::setState(int id) {
 	return false;
 }
 
+int Couche::getActiveShapeIndex() const {
+	return activeShapeIndex;
+}
+
+void Couche::setActiveShapeIndex(int index) {
+	if (index >= 0 && index < formes.size())
+		activeShapeIndex = index;
+}
+
 Vecteur<Forme*> Couche::getFormes() const {
 	return formes;
 }
@@ -49,6 +59,7 @@ bool Couche::addForme(Forme *const &f) {
 
 	if (f != nullptr) {
 		formes.push_back(f);
+		activeShapeIndex = formes.size() - 1;
 		return true;
 	}
 
@@ -66,7 +77,9 @@ Forme* Couche::removeForme(int index) {
 			}
 		}
 
+		activeShapeIndex = -1;
 		formes = newFormes;
+
 		return removedForme;
 	}
 
@@ -96,6 +109,7 @@ bool Couche::reinitialiser() {
 	try {
 		formes.clear();
 		currentState = STATES[0]; // Initialisée
+		activeShapeIndex = -1;
 
 		return true;
 	}

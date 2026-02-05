@@ -7,7 +7,7 @@
 ********/
 
 #include <QApplication>
-#include <windows.h>
+//#include <windows.h>
 #include "tests.h"
 #include "monInterface.h"
 
@@ -21,10 +21,10 @@ int main( int argc, char ** argv ) {
 	//tests.tests_application();
 	//tests.tests_unitaires();
 
+	//system("pause");
+
 	QApplication app(argc, argv);
 	MonInterface gui("GraphicusGUI 1.1");
-
-	//system("pause");
 
 	return app.exec();
 }

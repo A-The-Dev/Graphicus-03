@@ -21,6 +21,8 @@ private:
 	Vecteur<Forme*> formes;
 	string currentState; // Peut prendre les valeurs "Initialisée", "Active" ou "Inactive"
 
+	int activeShapeIndex;
+
 public:
 	// Classe à compléter
 	Couche();
@@ -28,6 +30,9 @@ public:
 
 	string getState() const;
 	bool setState(int id);
+
+	int getActiveShapeIndex() const;
+	void setActiveShapeIndex(int index);
 
 	Vecteur<Forme*> getFormes() const;
 	Forme* getFormeByIndex(int index) const;

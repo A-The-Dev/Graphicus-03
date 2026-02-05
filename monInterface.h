@@ -1,11 +1,9 @@
 /********
 * Fichier: monInterface.h
-* Auteurs: C.-A. Brunet
-* Date: 10 janvier 2024
-* Description: La classe MonInterface teste l'interface utilisateur GraphicusGUI.
+* Auteurs: A. Samson
+* Date: 02 février 2026
+* Description: La classe MonInterface modifiée pour l'interface utilisateur GraphicusGUI.
 *
-* Copyright 2024 Département de génie électrique et génie informatique
-*                Université de Sherbrooke  
 ********/
 
 #ifndef MONINTERFACE_H
